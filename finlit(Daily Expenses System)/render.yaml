@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: daily-expenses-api
+    env: node
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+  - type: web
+    name: daily-expenses-client
+    env: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://daily-expenses-api.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
